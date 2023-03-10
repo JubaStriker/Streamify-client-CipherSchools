@@ -91,7 +91,7 @@ const NavigationBar = () => {
                         variant="small"
                         className="mr-4 cursor-pointer py-1.5 font-normal"
                     >
-                        <span>Streamify</span>
+                        <span className='font-mono font-semibold text-xl'>Streamify</span>
                     </Typography>
                 </Link>
                 <div className="hidden lg:block">{navList}</div>
@@ -146,11 +146,16 @@ const NavigationBar = () => {
             <MobileNav open={openNav}>
                 <div className="container mx-auto">
                     {navList}
-                    <Link to='/login'>
-                        <Button variant="gradient" size="sm" fullWidth className="mb-2">
-                            <span>Login</span>
+                    {user ?
+                        <Button onClick={handleLogOut} variant="gradient" size="sm" fullWidth className="mb-2">
+                            <span>log out</span>
                         </Button>
-                    </Link>
+                        :
+                        <Link to='/login'>
+                            <Button variant="gradient" size="sm" fullWidth className="mb-2">
+                                <span>Login</span>
+                            </Button>
+                        </Link>}
                 </div>
             </MobileNav>
         </Navbar>
