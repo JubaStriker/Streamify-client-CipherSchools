@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState, useEffect } from "react";
 import {
     Navbar,
@@ -7,10 +7,24 @@ import {
     Button,
     IconButton,
 } from "@material-tailwind/react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Context/AuthProvider/AuthProvider';
 
 const NavigationBar = () => {
+
     const [openNav, setOpenNav] = useState(false);
+    const { user, logout } = useContext(AuthContext);
+    const navigate = useNavigate()
+
+    const handleLogOut = () => {
+        logout()
+            .then(() => {
+                navigate('/login')
+            })
+            .catch(err => {
+
+            })
+    }
 
     useEffect(() => {
         window.addEventListener(
@@ -39,9 +53,11 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="/" className="flex items-center">
-                    Account
-                </a>
+                <Link to='/uploadvideo'>
+                    <a href="/" className="flex items-center">
+                        Upload
+                    </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -79,11 +95,16 @@ const NavigationBar = () => {
                     </Typography>
                 </Link>
                 <div className="hidden lg:block">{navList}</div>
-                <Link to='/login'>
-                    <Button variant="gradient" size="sm" className="hidden lg:inline-block">
-                        <span>Login</span>
+                {user ?
+                    <Button onClick={handleLogOut} variant="gradient" size="sm" className="hidden lg:inline-block">
+                        <span>log out</span>
                     </Button>
-                </Link>
+                    :
+                    <Link to='/login'>
+                        <Button variant="gradient" size="sm" className="hidden lg:inline-block">
+                            <span>Login</span>
+                        </Button>
+                    </Link>}
                 <IconButton
                     variant="text"
                     className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
