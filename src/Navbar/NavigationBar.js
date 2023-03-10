@@ -7,6 +7,7 @@ import {
     Button,
     IconButton,
 } from "@material-tailwind/react";
+import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
     const [openNav, setOpenNav] = useState(false);
@@ -26,9 +27,11 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="/" className="flex items-center">
-                    Pages
-                </a>
+                <Link to='/home'>
+                    <a href="/" className="flex items-center">
+                        Home
+                    </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -66,18 +69,21 @@ const NavigationBar = () => {
     return (
         <Navbar className="mx-auto max-w-full py-2 px-4 lg:px-8 lg:py-4">
             <div className="container max-w-6xl mx-auto flex items-center justify-between text-blue-gray-900">
-                <Typography
-                    as="a"
-                    href="/"
-                    variant="small"
-                    className="mr-4 cursor-pointer py-1.5 font-normal"
-                >
-                    <span>Streamify</span>
-                </Typography>
+                <Link to='/'>
+                    <Typography
+                        as="a"
+                        variant="small"
+                        className="mr-4 cursor-pointer py-1.5 font-normal"
+                    >
+                        <span>Streamify</span>
+                    </Typography>
+                </Link>
                 <div className="hidden lg:block">{navList}</div>
-                <Button variant="gradient" size="sm" className="hidden lg:inline-block">
-                    <span>Buy Now</span>
-                </Button>
+                <Link to='/login'>
+                    <Button variant="gradient" size="sm" className="hidden lg:inline-block">
+                        <span>Login</span>
+                    </Button>
+                </Link>
                 <IconButton
                     variant="text"
                     className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -119,9 +125,11 @@ const NavigationBar = () => {
             <MobileNav open={openNav}>
                 <div className="container mx-auto">
                     {navList}
-                    <Button variant="gradient" size="sm" fullWidth className="mb-2">
-                        <span>Buy Now</span>
-                    </Button>
+                    <Link to='/login'>
+                        <Button variant="gradient" size="sm" fullWidth className="mb-2">
+                            <span>Login</span>
+                        </Button>
+                    </Link>
                 </div>
             </MobileNav>
         </Navbar>
