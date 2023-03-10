@@ -1,15 +1,37 @@
-import React from 'react';
-import {
-    Card,
-    Input,
-    Checkbox,
-    Button,
-    Typography,
-} from "@material-tailwind/react";
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const Login = () => {
+
+    const { loginUser, providerLogin } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [errors, setErrors] = useState("");
+    const from = location.state?.from?.pathname || '/';
+
+    const handleOnSubmit = e => {
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log(email, password);
+        loginUser(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                const currentUser = {
+                    email: user.email
+                }
+                console.log(currentUser);
+                navigate(from, { replace: true });
+            })
+            .catch(err => setErrors(err.code)
+            )
+    };
+
     return (
         <div className='flex justify-center mt-20 flex-col items-center md:flex-row'>
             <Card color="transparent" shadow={false}>
@@ -19,10 +41,10 @@ const Login = () => {
                 <Typography color="gray" className="mt-1 font-normal">
                     Enter your email and password to login
                 </Typography>
-                <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+                <form onSubmit={handleOnSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
                     <div className="mb-4 flex flex-col gap-6">
-                        <Input size="lg" label="Email" />
-                        <Input type="password" size="lg" label="Password" />
+                        <Input name='email' size="lg" label="Email" />
+                        <Input name='password' type="password" size="lg" label="Password" />
                     </div>
                     {/* <Checkbox
                         label={
@@ -44,9 +66,14 @@ const Login = () => {
                         }
                         containerProps={{ className: "-ml-2.5" }}
                     /> */}
-                    <Button className="mt-6" fullWidth>
+                    <Button type='submit' className="mt-6" fullWidth>
                         Login
                     </Button>
+
+                    <Typography color="Red" className="mt-4 text-center text-red-600 font-normal">
+                        {errors}
+                    </Typography>
+
                     <Link to="/signup">
                         <Typography color="gray" className="mt-4 text-center font-normal">
                             Don't have an account?{" "}
