@@ -1,11 +1,11 @@
-import './App.css';
-import { Button } from "@material-tailwind/react";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./Routes/routes";
 
 function App() {
   return (
-    <div className="App">
-      <Button variant="gradient">gradient</Button>
-    </div>
+    <>
+      <RouterProvider router={router}></RouterProvider>
+    </>
   );
 }
 
