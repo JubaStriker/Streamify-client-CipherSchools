@@ -14,31 +14,31 @@ const UploadVid = () => {
         setFile(files[0])
         setFileName(files[0].name)
 
-
+        console.log(file)
     }
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        let formData = new FormData();
-        const config = {
-            header: { 'content-type': 'multipart/form-data' }
-        }
         const form = e.target;
+        // const video = form.video.files[0]
+        let formData = new FormData();
         const title = form.title.value;
         const description = form.description.value;
-        formData.append("file", file)
-        formData.append("title", title)
-        formData.append("description", description)
-        console.log(formData)
+        formData.append("filename", file)
+        console.log(file)
 
-        axios.post(`http://localhost:5000/api/v1/media/create`, formData)
-            .then(success => {
-                alert('submitted')
+        fetch('http://localhost:5000/uploadVideo', {
+
+            method: 'POST',
+            body: formData,
+
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log(result)
             })
-            .catch(err => {
-                console.log(err)
-                alert('error creating file upload')
-            })
+
+
     }
 
 
@@ -53,7 +53,7 @@ const UploadVid = () => {
                         {({ getRootProps, getInputProps }) => (
                             <section>
                                 <div className='w-[300px] h-[240px] border-2 border-gray-300 border-dashed hover:border-blue-500' {...getRootProps()}>
-                                    <input {...getInputProps()} />
+                                    <input {...getInputProps()} name='file' />
                                     <div className='flex flex-col justify-center h-full text-gray-600 items-center text-4xl'>
                                         <ImUpload />
                                         {file ? <p className='text-sm'>{fileName}</p> : <p className='text-sm'>Drag and drop files here</p>}
@@ -64,6 +64,9 @@ const UploadVid = () => {
                         )}
                     </Dropzone>
 
+                    {/* <div className='mt-3 max-w-3xl'>
+                        <Input name='video' size="lg" label="Video" type='file' required />
+                    </div> */}
                     <div className='mt-3 max-w-3xl'>
                         <Input name='title' size="lg" label="Title" required />
                     </div>
