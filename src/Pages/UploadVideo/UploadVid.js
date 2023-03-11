@@ -9,7 +9,7 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const UploadVid = () => {
 
-    const [fileName, setFileName] = useState("");
+    const [fileName, setFileName] = useState("Drag and drop files here");
     const [file, setFile] = useState([]);
     const { user } = useContext(AuthContext)
     const [loading, setLoading] = useState(false);
@@ -43,6 +43,7 @@ const UploadVid = () => {
                     description: description,
                     authorName: user.displayName,
                     video: result.url,
+                    authorEmail: user.email
                 }
 
                 console.log("post", post)
@@ -61,6 +62,7 @@ const UploadVid = () => {
                         setLoading(false)
                         form.reset()
                         setFileName("")
+                        toast.success("Video posted successfully")
                     })
 
 
@@ -119,7 +121,7 @@ const UploadVid = () => {
                         className="player"
                         loop
                         autoplay
-                        style={{ height: '600px', width: '600px' }}
+                        style={{ height: '300px', width: '300px' }}
                     /> : <></>}
                 </div>
             </div>

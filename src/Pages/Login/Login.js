@@ -3,6 +3,7 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const Login = () => {
 
@@ -11,6 +12,16 @@ const Login = () => {
     const navigate = useNavigate();
     const [errors, setErrors] = useState("");
     const from = location.state?.from?.pathname || '/';
+    const googleProvider = new GoogleAuthProvider();
+
+    const handleGoogleLogin = () => {
+        providerLogin(googleProvider)
+            .then(result => {
+                console.log(result.user)
+                navigate(from, { replace: true });
+            })
+            .catch(error => console.log(error.message))
+    }
 
     const handleOnSubmit = e => {
         e.preventDefault();
@@ -68,6 +79,10 @@ const Login = () => {
                     /> */}
                     <Button type='submit' className="mt-6" fullWidth>
                         Login
+                    </Button>
+
+                    <Button onClick={handleGoogleLogin} className="mt-6" fullWidth color="red">
+                        Login with google
                     </Button>
 
                     <Typography color="Red" className="mt-4 text-center text-red-600 font-normal">
