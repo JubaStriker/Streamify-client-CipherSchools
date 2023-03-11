@@ -7,21 +7,45 @@ import { ImUpload } from 'react-icons/im'
 
 const UploadVid = () => {
 
-    const [file, setFile] = useState("")
+    const [fileName, setFileName] = useState("");
+    const [file, setFile] = useState([]);
+
     const onDrop = (files) => {
+        setFile(files[0])
+        setFileName(files[0].name)
+
+
+    }
+
+    const handleOnSubmit = (e) => {
+        e.preventDefault();
         let formData = new FormData();
         const config = {
             header: { 'content-type': 'multipart/form-data' }
         }
-        console.log(files[0].name)
-        formData.append("file", files[0])
-        setFile(files[0].name)
+        const form = e.target;
+        const title = form.title.value;
+        const description = form.description.value;
+        formData.append("file", file)
+        formData.append("title", title)
+        formData.append("description", description)
+        console.log(formData)
 
+        axios.post(`http://localhost:5000/api/v1/media/create`, formData)
+            .then(success => {
+                alert('submitted')
+            })
+            .catch(err => {
+                console.log(err)
+                alert('error creating file upload')
+            })
     }
+
+
     return (
         <div className='md:mx-10 md:px-10 mt-10 mx-2'>
             <h1 className='my-4 text-4xl font-semibold'>Upload video</h1>
-            <form>
+            <form onSubmit={handleOnSubmit}>
                 <div className='flex justify-center flex-col'>
                     <Dropzone onDrop={onDrop}
                         multiple={false}
@@ -29,10 +53,10 @@ const UploadVid = () => {
                         {({ getRootProps, getInputProps }) => (
                             <section>
                                 <div className='w-[300px] h-[240px] border-2 border-gray-300 border-dashed hover:border-blue-500' {...getRootProps()}>
-                                    <input {...getInputProps()} accept=".mp4, .mkv" />
+                                    <input {...getInputProps()} />
                                     <div className='flex flex-col justify-center h-full text-gray-600 items-center text-4xl'>
                                         <ImUpload />
-                                        {file ? <p className='text-sm'>{file}</p> : <p className='text-sm'>Drag and drop files here</p>}
+                                        {file ? <p className='text-sm'>{fileName}</p> : <p className='text-sm'>Drag and drop files here</p>}
                                     </div>
 
                                 </div>
@@ -41,13 +65,13 @@ const UploadVid = () => {
                     </Dropzone>
 
                     <div className='mt-3 max-w-3xl'>
-                        <Input name='email' size="lg" label="Title" required />
+                        <Input name='title' size="lg" label="Title" required />
                     </div>
                     <div className='mt-3 max-w-3xl'>
-                        <Textarea variant="outlined" label="description" />
+                        <Textarea name="description" variant="outlined" label="description" />
                     </div>
                     <div>
-                        <Button variant="gradient" size="sm" className="">
+                        <Button type='submit' variant="gradient" size="sm" className="">
                             <span>Upload</span>
                         </Button>
                     </div>
