@@ -9,7 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthProvider/AuthProvider';
-
+import logo from '../Assets/Logo/1-removebg-preview.png'
 const NavigationBar = () => {
 
     const [openNav, setOpenNav] = useState(false);
@@ -66,7 +66,7 @@ const NavigationBar = () => {
                 className="p-1 font-normal"
             >
                 <a href="/" className="flex items-center">
-                    Blocks
+                    Trending
                 </a>
             </Typography>
             <Typography
@@ -76,22 +76,24 @@ const NavigationBar = () => {
                 className="p-1 font-normal"
             >
                 <a href="/" className="flex items-center">
-                    Docs
+                    About
                 </a>
             </Typography>
         </ul>
     );
 
     return (
-        <Navbar className="mx-auto max-w-full py-2 px-4 lg:px-8 lg:py-4">
+        <Navbar className="border-b z-40 border-gray-200 shadow-md navbar sticky top-0   backdrop-filter backdrop-blur-lg bg-opacity-75 mx-auto max-w-full py-2 px-4 lg:px-8 lg:py-4">
             <div className="container max-w-6xl mx-auto flex items-center justify-between text-blue-gray-900">
                 <Link to='/'>
                     <Typography
                         as="a"
                         variant="small"
-                        className="mr-4 cursor-pointer py-1.5 font-normal"
+                        className="mr-4 cursor-pointer font-normal"
                     >
-                        <span className='font-mono font-semibold text-xl'>Streamify</span>
+                        <span className='font-mono font-semibold text-xl'>
+                            <img className='h-[52px] w-[100px]' src={logo} alt="logo" />
+                        </span>
                     </Typography>
                 </Link>
                 <div className="hidden lg:block">{navList}</div>
