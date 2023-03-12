@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 const VideoCard = () => {
 
     const [videos, setVideos] = useState([])
-    axios.get('https://video-stream-server.vercel.app/videos')
+    axios.get('http://localhost:5000/videos')
         .then(function (response) {
             // handle success
             setVideos(response.data);

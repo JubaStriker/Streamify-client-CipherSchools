@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import { AiFillLike, AiOutlineComment, AiOutlineShareAlt, AiOutlineLike, AiOutlineSend } from 'react-icons/ai'
+import { AiFillLike, AiOutlineComment, AiOutlineShareAlt, AiOutlineLike, AiOutlineSend, AiOutlineEye } from 'react-icons/ai'
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import { useQuery } from 'react-query';
 import { Button, Textarea } from '@material-tailwind/react';
@@ -11,12 +11,34 @@ const PostDetails = () => {
     const data = useLoaderData()
     const authorEmail = data.authorEmail;
     const id = data._id
+    let views;
+    if (data?.views) {
+        views = data.views;
+    }
+    const newViews = views + 1;
+    const watch = { views: newViews }
     const { user } = useContext(AuthContext);
     const like = { uid: user.uid }
     const likeArr = data.like;
     const found = likeArr.find(element => element.uid === like.uid);
     let react;
     const foundUid = found?.uid;
+
+    const handleView = () => {
+        fetch(`https://video-stream-server.vercel.app/views?id=${id}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(watch)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
+
+    }
+
 
 
     const { data: posts = {}, isFetching, refetch } = useQuery({
@@ -224,7 +246,7 @@ const PostDetails = () => {
 
     return (
         <div>
-            <video className="w-full mt-2 mx-2 md:mx-auto  h-auto max-w-7xl lg:mx-auto border border-gray-200 rounded-lg dark:border-gray-700" controls>
+            <video onClick={handleView} className="w-full mt-2 mx-2 md:mx-auto  h-auto max-w-7xl lg:mx-auto border border-gray-200 rounded-lg dark:border-gray-700" controls>
                 <source src={data.video} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
@@ -260,6 +282,12 @@ const PostDetails = () => {
                             <AiOutlineComment className='text-3xl ml-3' />
                         </div>
                         <div className='font-semibold'>{posts?.comment?.length}</div>
+                    </div>
+                    <div className='flex items-center gap-1'>
+                        <div>
+                            <AiOutlineEye className='text-3xl ml-3' />
+                        </div>
+                        <div className='font-semibold'>{posts.views}</div>
                     </div>
                     <div><AiOutlineShareAlt onClick={handleShare} className='text-3xl ml-3' /></div>
                 </div>
