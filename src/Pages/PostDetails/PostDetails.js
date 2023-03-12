@@ -9,7 +9,7 @@ import { toast } from 'react-hot-toast';
 const PostDetails = () => {
 
     const data = useLoaderData()
-    console.log(data?.like?.length)
+    const authorEmail = data.authorEmail;
     const id = data._id
     const { user } = useContext(AuthContext);
     const like = { uid: user.uid }
@@ -22,7 +22,7 @@ const PostDetails = () => {
     const { data: posts = {}, isFetching, refetch } = useQuery({
         queryKey: ['posts', id],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/details/${id}`);
+            const res = await fetch(`https://video-stream-server.vercel.app/details/${id}`);
             const data = await res.json();
             return data;
         }
@@ -30,7 +30,7 @@ const PostDetails = () => {
 
 
     const handleLike = (id) => {
-        fetch(`http://localhost:5000/postlike?id=${id}`, {
+        fetch(`https://video-stream-server.vercel.app/postlike?id=${id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -40,16 +40,30 @@ const PostDetails = () => {
             .then(res => res.json())
             .then(data => {
                 console.log("data", data)
+                const notification = {
+                    type: 'like',
+                    message: `${user.displayName} liked your video.`,
+                    email: authorEmail
+                }
+                fetch('https://video-stream-server.vercel.app/notification', {
+
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(notification)
+
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        console.log(result)
+                    })
                 refetch()
-                if (data.acknowledged === "true") {
-                }
-                else {
-                }
             })
     }
 
     const handleDisLike = (id) => {
-        fetch(`http://localhost:5000/postdislike?id=${id}`, {
+        fetch(`https://video-stream-server.vercel.app/postdislike?id=${id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -60,7 +74,25 @@ const PostDetails = () => {
             .then(data => {
                 refetch()
                 if (data.acknowledged === "true") {
+                    const notification = {
+                        type: 'dislike',
+                        message: `${user.displayName} disliked your video.`,
+                        email: authorEmail
+                    }
+                    fetch('https://video-stream-server.vercel.app/notification', {
 
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json',
+                        },
+                        body: JSON.stringify(notification)
+
+                    })
+                        .then(res => res.json())
+                        .then(result => {
+                            console.log(result)
+                            refetch()
+                        })
                 }
                 else {
 
@@ -107,7 +139,7 @@ const PostDetails = () => {
             commenter: user.displayName,
             commenterImg: commenterImg
         }
-        fetch(`http://localhost:5000/postcomment?id=${id}`, {
+        fetch(`https://video-stream-server.vercel.app/postcomment?id=${id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -118,6 +150,26 @@ const PostDetails = () => {
             .then(data => {
                 console.log("data", data)
                 form.reset()
+                const notification = {
+                    type: 'comment',
+                    message: `${user.displayName} commented on your video.`,
+                    email: authorEmail
+                }
+                console.log("notification", notification)
+                fetch('https://video-stream-server.vercel.app/notification', {
+
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(notification)
+
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        console.log(result)
+                        refetch()
+                    })
                 refetch()
             })
 
@@ -133,6 +185,7 @@ const PostDetails = () => {
         const comment = []
         const sharedName = user.displayName;
         const sharedImg = commenterImg;
+        const authorEmail = data.authorEmail
 
         const post = {
             title,
@@ -143,10 +196,11 @@ const PostDetails = () => {
             like,
             comment,
             sharedName,
-            sharedImg
+            sharedImg,
+            authorEmail
         }
 
-        fetch('http://localhost:5000/shareVideo', {
+        fetch('https://video-stream-server.vercel.app/shareVideo', {
 
             method: 'POST',
             headers: {

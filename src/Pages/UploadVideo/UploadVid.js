@@ -37,7 +37,7 @@ const UploadVid = () => {
             authorImg = "https://cdn-icons-png.flaticon.com/512/1057/1057231.png"
         }
 
-        fetch('http://localhost:5000/uploadVideo', {
+        fetch('https://video-stream-server.vercel.app/uploadVideo', {
 
             method: 'POST',
             body: formData,
@@ -57,7 +57,7 @@ const UploadVid = () => {
                 }
 
                 console.log("post", post)
-                fetch('http://localhost:5000/saveVideo', {
+                fetch('https://video-stream-server.vercel.app/saveVideo', {
 
                     method: 'POST',
                     headers: {

@@ -14,7 +14,6 @@ const NavigationBar = () => {
 
     const [openNav, setOpenNav] = useState(false);
     const { user, logout } = useContext(AuthContext);
-    console.log(user)
     let photo
     if (user?.photoURL) {
         photo = user.photoURL
@@ -76,7 +75,7 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <Link to='/notification'>
+                <Link to='/notifications'>
                     <p className="flex items-center">
                         Notification
                     </p>

@@ -24,7 +24,7 @@ const Login = () => {
                     email: user.email
                 }
                 console.log(notification)
-                fetch('http://localhost:5000/notification', {
+                fetch('https://video-stream-server.vercel.app/notification', {
 
                     method: 'POST',
                     headers: {
@@ -35,7 +35,6 @@ const Login = () => {
                 })
                     .then(res => res.json())
                     .then(result => {
-                        console.log("Provider", result)
                     })
 
                 navigate(from, { replace: true });
@@ -57,7 +56,7 @@ const Login = () => {
                     message: `Hello ${user.displayName} welcome to streamify.`,
                     email: user.email
                 }
-                fetch('http://localhost:5000/notification', {
+                fetch('https://video-stream-server.vercel.app/notification', {
 
                     method: 'POST',
                     headers: {
