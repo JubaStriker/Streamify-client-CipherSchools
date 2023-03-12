@@ -76,9 +76,11 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="/" className="flex items-center">
-                    Trending
-                </a>
+                <Link to='/notification'>
+                    <p className="flex items-center">
+                        Notification
+                    </p>
+                </Link>
             </Typography>
             <Typography
                 as="li"

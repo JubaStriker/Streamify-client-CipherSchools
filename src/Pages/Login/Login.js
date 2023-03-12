@@ -17,7 +17,27 @@ const Login = () => {
     const handleGoogleLogin = () => {
         providerLogin(googleProvider)
             .then(result => {
-                console.log(result.user)
+                const user = result.user
+                const notification = {
+                    type: 'welcome',
+                    message: `Hello ${user.displayName} welcome to streamify.`,
+                    email: user.email
+                }
+                console.log(notification)
+                fetch('http://localhost:5000/notification', {
+
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(notification)
+
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        console.log("Provider", result)
+                    })
+
                 navigate(from, { replace: true });
             })
             .catch(error => console.log(error.message))
@@ -32,11 +52,25 @@ const Login = () => {
         loginUser(email, password)
             .then(result => {
                 const user = result.user;
-                console.log(user);
-                const currentUser = {
+                const notification = {
+                    type: 'welcome',
+                    message: `Hello ${user.displayName} welcome to streamify.`,
                     email: user.email
                 }
-                console.log(currentUser);
+                fetch('http://localhost:5000/notification', {
+
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(notification)
+
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        console.log(result)
+                    })
+
                 navigate(from, { replace: true });
             })
             .catch(err => setErrors(err.code)

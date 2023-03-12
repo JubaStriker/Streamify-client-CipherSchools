@@ -18,7 +18,7 @@ const VideoCard = () => {
         })
         .catch(function (error) {
             // handle error
-            console.log(error);
+            // console.log(error);
         })
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-2 md:mx-10'>

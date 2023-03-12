@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
+import Notifications from "../Pages/Notifications/Notifications";
 import PostDetails from "../Pages/PostDetails/PostDetails";
 import SignUp from "../Pages/SignUp/SignUp";
 import UploadVid from "../Pages/UploadVideo/UploadVid";
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
                 path: '/details/:id',
                 element: <PrivateRoute><PostDetails></PostDetails></PrivateRoute>,
                 loader: ({ params }) => fetch(`http://localhost:5000/details/${params.id}`)
+            },
+            {
+                path: '/notifications',
+                element: <PrivateRoute><Notifications /></PrivateRoute>
             }
         ]
     }
