@@ -1,6 +1,5 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { Button, Input, Textarea } from '@material-tailwind/react';
-import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { toast } from 'react-hot-toast';

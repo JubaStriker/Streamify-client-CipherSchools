@@ -14,6 +14,14 @@ const NavigationBar = () => {
 
     const [openNav, setOpenNav] = useState(false);
     const { user, logout } = useContext(AuthContext);
+    console.log(user)
+    let photo
+    if (user?.photoURL) {
+        photo = user.photoURL
+    }
+    else {
+        photo = 'https://cdn-icons-png.flaticon.com/512/1057/1057231.png'
+    }
     const navigate = useNavigate()
 
     const handleLogOut = () => {
@@ -97,16 +105,19 @@ const NavigationBar = () => {
                     </Typography>
                 </Link>
                 <div className="hidden lg:block">{navList}</div>
-                {user ?
-                    <Button onClick={handleLogOut} variant="gradient" size="sm" className="hidden lg:inline-block">
-                        <span>log out</span>
-                    </Button>
-                    :
-                    <Link to='/login'>
-                        <Button variant="gradient" size="sm" className="hidden lg:inline-block">
-                            <span>Login</span>
+                <div className='flex justify-center gap-2'>
+                    {user ?
+                        <Button onClick={handleLogOut} variant="gradient" size="sm" className="hidden lg:inline-block">
+                            <span>log out</span>
                         </Button>
-                    </Link>}
+                        :
+                        <Link to='/login'>
+                            <Button variant="gradient" size="sm" className="hidden lg:inline-block">
+                                <span>Login</span>
+                            </Button>
+                        </Link>}
+                    <img src={photo} alt="" className='h-8 w-8 rounded-full' />
+                </div>
                 <IconButton
                     variant="text"
                     className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -141,6 +152,7 @@ const NavigationBar = () => {
                                 strokeLinejoin="round"
                                 d="M4 6h16M4 12h16M4 18h16"
                             />
+
                         </svg>
                     )}
                 </IconButton>
@@ -148,6 +160,10 @@ const NavigationBar = () => {
             <MobileNav open={openNav}>
                 <div className="container mx-auto">
                     {navList}
+
+                    <img src={photo} alt="" className='h-8 w-8 rounded-full ml-2' />
+
+
                     {user ?
                         <Button onClick={handleLogOut} variant="gradient" size="sm" fullWidth className="mb-2">
                             <span>log out</span>

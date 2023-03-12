@@ -30,7 +30,6 @@ const SignUp = () => {
 
         createUser(email, password)
             .then(result => {
-                const user = result.user;
                 updateProfile(auth.currentUser, { displayName: name })
                     .then(() => {
                         setError("")
