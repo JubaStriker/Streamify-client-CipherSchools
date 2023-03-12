@@ -28,6 +28,14 @@ const UploadVid = () => {
         const description = form.description.value;
         formData.append("filename", file)
         setLoading(true)
+        let authorImg;
+
+        if (user?.photoURL) {
+            authorImg = user.photoURL;
+        }
+        else {
+            authorImg = "https://cdn-icons-png.flaticon.com/512/1057/1057231.png"
+        }
 
         fetch('http://localhost:5000/uploadVideo', {
 
@@ -42,7 +50,10 @@ const UploadVid = () => {
                     description: description,
                     authorName: user.displayName,
                     video: result.url,
-                    authorEmail: user.email
+                    authorEmail: user.email,
+                    authorImg: authorImg,
+                    like: []
+
                 }
 
                 console.log("post", post)

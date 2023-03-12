@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import { AiFillLike, AiOutlineComment, AiOutlineShareAlt, AiOutlineLike } from 'react-icons/ai'
+import { AiFillLike, AiOutlineComment, AiOutlineShareAlt, AiOutlineLike, AiOutlineSend } from 'react-icons/ai'
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import { useQuery } from 'react-query';
+import { Button, Textarea } from '@material-tailwind/react';
 
 const PostDetails = () => {
 
@@ -25,9 +26,6 @@ const PostDetails = () => {
             return data;
         }
     });
-
-    console.log("post", posts);
-
 
 
     const handleLike = (id) => {
@@ -60,8 +58,6 @@ const PostDetails = () => {
             .then(res => res.json())
             .then(data => {
                 refetch()
-                console.log("data", data)
-
                 if (data.acknowledged === "true") {
 
                 }
@@ -94,6 +90,38 @@ const PostDetails = () => {
         </button>
     }
 
+    let commenterImg;
+    if (user?.photoURL) {
+        commenterImg = user.photoURL;
+    }
+    else {
+        commenterImg = "https://cdn-icons-png.flaticon.com/512/1057/1057231.png"
+    }
+    const handleComment = (e) => {
+        e.preventDefault()
+        const form = e.target;
+        const commentText = form.comment.value;
+        const comment = {
+            text: commentText,
+            commenter: user.displayName,
+            commenterImg: commenterImg
+        }
+        fetch(`http://localhost:5000/postcomment?id=${id}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("data", data)
+                form.reset()
+                refetch()
+            })
+
+    };
+
 
 
 
@@ -122,9 +150,40 @@ const PostDetails = () => {
                 </div>
                 <div className='flex gap-0 items-center'>
                     {react}
-                    <div><AiOutlineComment className='text-3xl ml-3' /></div>
+                    <div className='flex items-center gap-1'>
+                        <div>
+                            <AiOutlineComment className='text-3xl ml-3' />
+                        </div>
+                        <div className='font-semibold'>{posts?.comment?.length}</div>
+                    </div>
                     <div><AiOutlineShareAlt className='text-3xl ml-3' /></div>
                 </div>
+            </div>
+            <div>
+                <form onSubmit={handleComment}>
+                    <div className='max-w-7xl mx-2 md:mx-auto mt-10'>
+                        <Textarea name="comment" variant="standard" label="Comment" placeholder='                      Leave a comment' />
+                    </div>
+                    <div className='max-w-7xl mx-2 md:mx-auto mt-10 p-0'>
+                        <Button type='submit'><AiOutlineSend className='text-2xl' /></Button>
+                    </div>
+                </form>
+            </div>
+
+            <div>
+                {posts?.comment?.map((c, i) =>
+                    <div key={i} className='border-none m-2 bg-base-200 max-w-7xl mx-2 md:mx-auto mt-10 rounded-lg'>
+                        <div className='flex justify-start items-center'>
+                            <div className="w-8 rounded-full mx-4 my-4">
+                                <img src={c.commenterImg} alt="" className='rounded-full' />
+                            </div>
+                            <div>
+                                <h1 className='text-lg font-bold'>{c.commenter}</h1>
+                            </div>
+                        </div>
+                        <h1 className='mx-4 pb-2 text-lg'>{c.text}</h1>
+                    </div>
+                )}
             </div>
         </div>
     );
