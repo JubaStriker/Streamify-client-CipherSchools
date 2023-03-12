@@ -37,9 +37,15 @@ const VideoCard = () => {
                             </video>
                         </CardHeader>
                         <CardBody>
-                            <Typography variant="h5" color="blue-gray">
-                                {vid.title}
-                            </Typography>
+                            <div className='flex justify-between items-center'>
+                                <Typography variant="h5" color="blue-gray">
+                                    {vid.title}
+                                </Typography>
+                                <div>
+                                    {vid.sharedName ? <p className='text-sm'>Shared by {vid.sharedName}</p> :
+                                        <p className='text-sm'>Uploaded by {vid.authorName} </p>}
+                                </div>
+                            </div>
                             <p className="mt-3 text-sm font-normal">
                                 {vid.description}
                             </p>

@@ -4,6 +4,7 @@ import { AiFillLike, AiOutlineComment, AiOutlineShareAlt, AiOutlineLike, AiOutli
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import { useQuery } from 'react-query';
 import { Button, Textarea } from '@material-tailwind/react';
+import { toast } from 'react-hot-toast';
 
 const PostDetails = () => {
 
@@ -122,6 +123,47 @@ const PostDetails = () => {
 
     };
 
+    const handleShare = () => {
+        const title = data.title
+        const description = data.description
+        const authorName = data.authorName
+        const video = data.video
+        const authorImg = data.authorImg
+        const like = []
+        const comment = []
+        const sharedName = user.displayName;
+        const sharedImg = commenterImg;
+
+        const post = {
+            title,
+            description,
+            authorName,
+            video,
+            authorImg,
+            like,
+            comment,
+            sharedName,
+            sharedImg
+        }
+
+        fetch('http://localhost:5000/shareVideo', {
+
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(post)
+
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log("result", result)
+                toast.success("Video shared successfully")
+            })
+
+
+    };
+
 
 
 
@@ -143,10 +185,19 @@ const PostDetails = () => {
             <div className='max-w-7xl mx-2 md:mx-auto mt-2 flex justify-between items-center gap-4'>
                 <div className='flex items-center gap-4'>
                     <div><img src={data.authorImg} alt="" className='h-20 w-20 rounded-full' /></div>
+
                     <div className='flex flex-col'>
                         <div className='text-sm font-thin'>Uploaded by</div>
                         <div className='text-xl font-medium'>{data.authorName}</div>
                     </div>
+
+                    {data.sharedImg ? <div><img src={data.sharedImg} alt="" className='h-16 w-16 rounded-full' /></div> : ''}
+                    {data.sharedName ? <div className='flex flex-col'>
+                        <div className='text-sm font-thin'>Shared by</div>
+                        <div className='text-lg font-medium'>{data.sharedName}</div>
+                    </div> : ""
+                    }
+
                 </div>
                 <div className='flex gap-0 items-center'>
                     {react}
@@ -156,7 +207,7 @@ const PostDetails = () => {
                         </div>
                         <div className='font-semibold'>{posts?.comment?.length}</div>
                     </div>
-                    <div><AiOutlineShareAlt className='text-3xl ml-3' /></div>
+                    <div><AiOutlineShareAlt onClick={handleShare} className='text-3xl ml-3' /></div>
                 </div>
             </div>
             <div>
