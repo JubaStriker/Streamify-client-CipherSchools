@@ -19,9 +19,12 @@ const NavigationBar = () => {
     if (user?.photoURL) {
         photo = user.photoURL
     }
-    else {
+    else if (user) {
         photo = 'https://cdn-icons-png.flaticon.com/512/1057/1057231.png'
     }
+    else (
+        photo = ''
+    )
     const navigate = useNavigate()
 
     const handleLogOut = () => {
@@ -116,7 +119,8 @@ const NavigationBar = () => {
                                 <span>Login</span>
                             </Button>
                         </Link>}
-                    <img src={photo} alt="" className='h-8 w-8 rounded-full hidden lg:block' />
+                    {user ? <img src={photo} alt="" className='h-8 w-8 rounded-full hidden lg:block' />
+                        : <></>}
                 </div>
                 <IconButton
                     variant="text"
@@ -161,7 +165,7 @@ const NavigationBar = () => {
                 <div className="container mx-auto">
                     {navList}
 
-                    <img src={photo} alt="" className='h-8 w-8 mb-2 rounded-full ml-2' />
+                    {user ? <img src={photo} alt="" className='h-8 w-8 mb-2 rounded-full ml-2' /> : <></>}
 
 
                     {user ?
