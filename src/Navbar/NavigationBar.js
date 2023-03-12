@@ -91,7 +91,7 @@ const NavigationBar = () => {
     );
 
     return (
-        <Navbar className="border-b z-40 border-gray-200 shadow-md navbar sticky top-0   backdrop-filter backdrop-blur-lg bg-opacity-75 mx-auto max-w-full py-2 px-4 lg:px-8 lg:py-4">
+        <Navbar className="border-b z-40 border-gray-200 shadow-md navbar sticky top-0   backdrop-filter backdrop-blur-lg bg-opacity-75 mx-auto max-w-full py-2 px-4 lg:px-8 lg:py-2">
             <div className="container max-w-6xl mx-auto flex items-center justify-between text-blue-gray-900">
                 <Link to='/'>
                     <Typography
@@ -116,7 +116,7 @@ const NavigationBar = () => {
                                 <span>Login</span>
                             </Button>
                         </Link>}
-                    <img src={photo} alt="" className='h-8 w-8 rounded-full' />
+                    <img src={photo} alt="" className='h-8 w-8 rounded-full hidden lg:block' />
                 </div>
                 <IconButton
                     variant="text"
@@ -161,7 +161,7 @@ const NavigationBar = () => {
                 <div className="container mx-auto">
                     {navList}
 
-                    <img src={photo} alt="" className='h-8 w-8 rounded-full ml-2' />
+                    <img src={photo} alt="" className='h-8 w-8 mb-2 rounded-full ml-2' />
 
 
                     {user ?
