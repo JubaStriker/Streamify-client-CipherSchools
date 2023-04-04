@@ -7,7 +7,7 @@ import {
     Button,
     IconButton,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthProvider/AuthProvider';
 import logo from '../Assets/Logo/1-removebg-preview.png'
 const NavigationBar = () => {
@@ -51,11 +51,10 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <Link to='/home'>
-                    <a href="/" className="flex items-center">
-                        Home
-                    </a>
-                </Link>
+                <NavLink to='/home' className={({ isActive }) =>
+                    isActive ? "text-base text-blue-500 border-t border-b hover:text-blue-500  font-bold border-purple-400" : "text-sm font-medium text-blue-300 hover:text-blue-500 border-0"
+                }>Home</NavLink>
+
             </Typography>
             <Typography
                 as="li"
@@ -63,11 +62,10 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <Link to='/uploadvideo'>
-                    <a href="/" className="flex items-center">
-                        Upload
-                    </a>
-                </Link>
+                <NavLink to='/uploadvideo' className={({ isActive }) =>
+                    isActive ? "text-base text-blue-500 border-t border-b hover:text-blue-500  font-bold border-purple-400" : "text-sm font-medium text-blue-300 hover:text-blue-500 border-0"
+                }>Upload</NavLink>
+
             </Typography>
             <Typography
                 as="li"
@@ -75,11 +73,10 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <Link to='/notifications'>
-                    <p className="flex items-center">
-                        Notification
-                    </p>
-                </Link>
+                <NavLink to='/notifications' className={({ isActive }) =>
+                    isActive ? "text-base text-blue-500 border-t border-b hover:text-blue-500  font-bold border-purple-400" : "text-sm font-medium text-blue-300 hover:text-blue-500 border-0"
+                }>Notification</NavLink>
+
             </Typography>
             <Typography
                 as="li"
@@ -87,9 +84,10 @@ const NavigationBar = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="/" className="flex items-center">
-                    About
-                </a>
+                <NavLink to='/about' className={({ isActive }) =>
+                    isActive ? "text-base text-blue-500 border-t border-b hover:text-blue-500  font-bold border-purple-400" : "text-sm font-medium text-blue-300 hover:text-blue-500 border-0"
+                }>About</NavLink>
+
             </Typography>
         </ul>
     );
